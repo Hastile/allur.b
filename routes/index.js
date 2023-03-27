@@ -1,16 +1,18 @@
 var express = require('express');
 var router = express.Router();
-const { chromium } = require('playwright');
 
-(async() => {
-  const browser = await chromium.launch();
-  const context = await browser.newContext();
-  const page = await context.newPage();
-  await page.goto('https://www.google.com');
-  const title = await page.title();
-  await browser.close();
-  console.log(`Google.com title: ${title}`)
-})()
+const Nightmare = require('nightmare')
+const nightmare = Nightmare({ show: false })
+ 
+nightmare
+  .goto('https://google.com')
+  .wait('.RNmpXc')
+  .evaluate(() => document.querySelector('.RNmpXc').value)
+  .end()
+  .then(console.log)
+  .catch(error => {
+    console.error('Search failed:', error)
+  })
 /* GET home page. */
 router.get('/', async function (req, res, next) {
   res.render('index.html');
