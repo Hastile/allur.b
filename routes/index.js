@@ -2,8 +2,7 @@ var express = require('express');
 var router = express.Router();
 const { chromium } = require('playwright');
 
-/* GET home page. */
-router.get('/', async function (req, res, next) {
+(async() => {
   const browser = await chromium.launch();
   const context = await browser.newContext();
   const page = await context.newPage();
@@ -11,6 +10,9 @@ router.get('/', async function (req, res, next) {
   const title = await page.title();
   await browser.close();
   console.log(`Google.com title: ${title}`)
+})()
+/* GET home page. */
+router.get('/', async function (req, res, next) {
   res.render('index.html');
 });
 
